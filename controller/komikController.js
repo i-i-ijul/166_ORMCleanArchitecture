@@ -53,3 +53,18 @@ async function  updateKomik(req, res) {
         res.status(500).json({error: 'Failed to update komik '});
     }
 }
+
+async function  deleteKomik(req, res) {
+    const { id } = req.params;
+    try {
+        const komik = await db.Komik.findByPk(id);
+        if (!komik) {
+            return res.status(404).json({error: 'Komik ga ketemu'});
+        }
+        await komik.destroy();
+        res.status(200).json({ message: 'Komik udah berhasil dihapus'});
+    } catch (err) {
+        console.error('Error deleting komik: ', err.message);
+        res.status(500).json({error: 'Failed to delete komik '});
+    }
+}
